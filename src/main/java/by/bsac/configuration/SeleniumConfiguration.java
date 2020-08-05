@@ -86,7 +86,10 @@ public class SeleniumConfiguration {
     public static void close() {
         // Close driver instance:
         LOGGER.debug("Try to close selenium firefox driver instance;");
-        if (SeleniumConfiguration.getDriver() != null) SeleniumConfiguration.getDriver().close();
+        if (SeleniumConfiguration.getDriver() != null) {
+            SeleniumConfiguration.getDriver().close();
+            SeleniumConfiguration.driver = null;
+        }
         else {
             LOGGER.warn(String.format("Selenium firefox driver is not initialized. Please set [%s] property;", GECKO_DRIVER_PROPERTY));
         }

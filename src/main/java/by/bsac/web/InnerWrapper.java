@@ -13,6 +13,7 @@ public class InnerWrapper extends Row {
     //Logger
     private static final Logger LOGGER = LoggerFactory.getLogger(InnerWrapper.class);
     private static final JavascriptFromJava SET_ATTR_SCRIPT = new SetInnerRowsWrappersAttr();
+    private boolean is_displayed = false;
 
     public InnerWrapper(WebElement a_row_element) {
         super(a_row_element);
@@ -20,5 +21,9 @@ public class InnerWrapper extends Row {
 
     public void setInnerRowWrapperAttr(Object value) {
         ScriptsProcessor.process(InnerWrapper.SET_ATTR_SCRIPT, super.getRowElement(), SetInnerRowsWrappersAttr.ATTRIBUTE_NAME, value);
+    }
+
+    public boolean isDisplayed() {
+        return super.getRowElement().getAttribute("style").isEmpty();
     }
 }
