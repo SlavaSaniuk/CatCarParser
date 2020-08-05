@@ -22,10 +22,10 @@ public class ArticlesTableIntegrationTest {
         DRIVER.get(TEST_URL);
     }
 
-    @AfterAll
-    static void afterEach() {
-        SeleniumConfiguration.close();
-    }
+    //@AfterAll
+   // static void afterEach() {
+     //   SeleniumConfiguration.close();
+    //}
 
     @Test
     void getRows_tableContainsRows_shouldReturnListOfRows() {
@@ -49,5 +49,24 @@ public class ArticlesTableIntegrationTest {
         Assertions.assertNotEquals(0, pointer_rows.size());
 
         pointer_rows.forEach(row -> LOGGER.debug("Pointer row: " +row));
+    }
+
+    @Test
+    void getInnerWrappers_tableContainsInnerWrappers_shouldReturnInnerWrappers() {
+
+        ArticlesTable table = new ArticlesTable();
+        List<InnerWrapper> inner_wrappers = table.getInnerWrappers();
+
+        Assertions.assertNotNull(inner_wrappers);
+        Assertions.assertNotEquals(0, inner_wrappers.size());
+
+        inner_wrappers.forEach(row -> LOGGER.debug("Inner wrapper: " +row));
+    }
+
+    @Test
+    void parseTable_realTable_shouldParseTable() {
+
+        ArticlesTable table = new ArticlesTable();
+        table.parseTable();
     }
 }

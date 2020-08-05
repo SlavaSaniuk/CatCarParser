@@ -3,7 +3,7 @@ package by.bsac.scripts;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class MainScript implements Script {
+public class MainScript {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MainScript.class); // Logger instance;
     private static final MainScript INSTANCE = new MainScript();
@@ -20,7 +20,6 @@ public class MainScript implements Script {
         MainScript.getInstance().run();
     }
 
-    @Override
     public void run() {
 
     }
