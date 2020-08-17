@@ -23,10 +23,10 @@ public class InnersTable extends Table {
         return this._getInnerRows();
     }
 
-    public List<InnerRow> _getInnerRows() {
+    private List<InnerRow> _getInnerRows() {
 
         // Initialize inner rows list:
-        if(this.inner_rows != null) this.inner_rows = new ArrayList<>();
+        if(this.inner_rows == null) this.inner_rows = new ArrayList<>();
 
         // Add inner rows:
         super.getRows().forEach(row -> this.inner_rows.add(new InnerRow(row.getRowElement())));
