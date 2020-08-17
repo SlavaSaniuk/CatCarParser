@@ -67,4 +67,18 @@ public class InnerWrapperIntegrationTests {
         });
 
     }
+
+    @Test
+    void getInnerTable_innerTableExist_shouldReturnInnerTable() {
+
+        ArticlesTable table = new ArticlesTable();
+        table.parseTable();
+
+        InnersTable inner = table.getInnerWrappers().get(0).getInnerTable();
+
+        Assertions.assertNotNull(inner);
+        LOGGER.debug(String.format("Pointer row[%s] -> inners table[%s];", table.getPointerRows().get(0), inner));
+
+    }
+
 }
