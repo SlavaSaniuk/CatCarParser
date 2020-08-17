@@ -37,6 +37,6 @@ public class InnersTable extends Table {
 
     @Override
     public void parseTable() {
-
+        this._getInnerRows();
     }
 }
