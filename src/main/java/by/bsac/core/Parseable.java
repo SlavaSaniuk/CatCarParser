@@ -1,6 +1,6 @@
 package by.bsac.core;
 
-public interface Parseable {
+public interface Parseable<T> {
 
-    void parse();
+     T parse();
 }

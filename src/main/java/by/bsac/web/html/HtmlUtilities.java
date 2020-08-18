@@ -13,4 +13,9 @@ public class HtmlUtilities {
         return Arrays.asList(class_attr.split(" "));
 
     }
+
+    public static String describeWebElement(WebElement a_element) {
+        return String.format("WebElement[tag: [%s], text: [%s], classes: [%s]], displayed: [%s]",
+                a_element.getTagName(), a_element.getText(), HtmlUtilities.getClassNames(a_element), a_element.isDisplayed());
+    }
 }

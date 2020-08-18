@@ -2,6 +2,7 @@ package by.bsac.web;
 
 import by.bsac.configuration.SeleniumConfiguration;
 import by.bsac.configuration.TableConstants;
+import by.bsac.core.Parseable;
 import by.bsac.scripts.MoveToElementScript;
 import by.bsac.scripts.ScriptsProcessor;
 import by.bsac.web.html.Table;
@@ -14,7 +15,7 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ArticlesTable extends Table {
+public class ArticlesTable extends Table implements Parseable<ArticlesTable> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ArticlesTable.class);
     @Getter
@@ -72,5 +73,17 @@ public class ArticlesTable extends Table {
         super.getTableContent().forEach(row -> {
             if (!PointerRow.isPointerRow(row)) this.inner_wrappers.add( new InnerWrapper(row.getRowElement()));
         });
+    }
+
+    @Override
+    public ArticlesTable parse() {
+
+        if (SeleniumConfiguration.TESTS_FLAG) return this;
+
+        LOGGER.trace("Start to parse this ArticlesTable object;");
+        this.parseTable();
+
+        LOGGER.trace("End of parse this ArticlesTable object");
+        return this;
     }
 }

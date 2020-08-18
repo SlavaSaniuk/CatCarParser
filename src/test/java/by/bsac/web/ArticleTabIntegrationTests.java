@@ -35,12 +35,15 @@ public class ArticleTabIntegrationTests {
     }
 
     @Test
-    void getArticleTabsLinks_twoArticleTabs_shouldReturnTwoArticleTabsLinks() {
+    void parse_articlesTableExist_shouldReturnParsedArticlesTable() {
 
-        ArticleTab tab = new ArticleTab();
-        List<ArticleTabLink> links = tab.getArticleTabsLinks();
+        ArticleTab tab = new ArticleTab(SeleniumConfiguration.getDriver().getCurrentUrl());
+        tab.parse();
 
-        Assertions.assertEquals(2, links.size());
-        links.forEach(link -> LOGGER.debug(link.toString()));
+        ArticlesTable table = tab.getArticleTable();
+        Assertions.assertNotNull(table);
+
+        table.getPointerRows().forEach(row -> LOGGER.debug("Pointer row text: " +row.getRowText()));
     }
+
 }

@@ -11,6 +11,8 @@ public class ArticleTabLink extends Link implements Velidable {
 
     public ArticleTabLink(WebElement a_link_element) {
         super(a_link_element);
+
+        // Check if
     }
 
     @Override

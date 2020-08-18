@@ -1,44 +1,59 @@
 package by.bsac.web;
 
 import by.bsac.configuration.SeleniumConfiguration;
-import by.bsac.core.Initializable;
+import by.bsac.core.Linked;
+import by.bsac.core.Parseable;
 import by.bsac.web.html.Link;
 import lombok.Getter;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.List;
+public class ArticleTab implements Linked, Parseable<ArticleTab> {
 
-public class ArticleTab implements Initializable {
+    private static final Logger LOGGER = LoggerFactory.getLogger(ArticleTab.class);
 
-    private ArticlesTable article_table;
+    private ArticlesTable article_table; // ArticleTable in this tab;
     @Getter
-    private List<ArticleTabLink> article_tabs_links;
+    private boolean parsed_flag = false; // Parsed flag;
+    @Getter
+    private final Link linked; // Link to this element;
 
-    public ArticleTab() {
-        // Initialize:
-        this.initialize();
+    public ArticleTab(String a_url) {
+        LOGGER.trace("Construct new ArticleTab object;");
+
+        // Construct linked object:
+        this.linked = newLinked(a_url);
+
     }
 
 
     @Override
-    public void initialize() {
+    public ArticleTab parse() {
+        LOGGER.trace("Start to parse this ArticleTab object;");
 
-        // Initialize article tabs links:
-        this._initializeArticleTableLinks();
+        // Navigate to this tab:
+        SeleniumConfiguration.getDriver().get(this.linked.getHrefValue());
+
+        // Parse article table:
+        this._parseArticlesTable();
+
+        LOGGER.trace("End of parse this ArticleTab object;");
+        this.parsed_flag = true;
+        return this;
+    }
+
+    private void _parseArticlesTable() {
+        LOGGER.trace("Start to parse ArticlesTable in this tab;");
+        this.article_table = new ArticlesTable();
+        this.article_table.parse();
+        LOGGER.trace("End of parsing ArticlesTable in this tab;");
+    }
+
+    public ArticlesTable getArticleTable() {
+
+        if (!this.parsed_flag) this.parse();
+        return this.article_table;
 
     }
 
-    private void _initializeArticleTableLinks() {
-
-        // Check if article_tabs_links is initialized
-        if (this.article_tabs_links == null) this.article_tabs_links = new ArrayList<>();
-
-        // Get article tabs links wrappers:
-        List<WebElement> wrappers_elements = SeleniumConfiguration.getDriver().findElements(By.className(ArticleTabLink.ARTICLE_TAB_LINK_CLASS));
-
-        // Construct new article tabs links:
-        wrappers_elements.forEach(element -> this.article_tabs_links.add(new ArticleTabLink(element.findElement(By.tagName(Link.TAG)))));
-    }
 }
