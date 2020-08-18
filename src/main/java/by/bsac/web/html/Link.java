@@ -2,7 +2,7 @@ package by.bsac.web.html;
 
 import by.bsac.configuration.SeleniumConfiguration;
 import by.bsac.core.Initializable;
-import by.bsac.core.Velidable;
+import by.bsac.core.Validable;
 import by.bsac.core.WebElementWrapper;
 import lombok.Getter;
 import org.openqa.selenium.WebDriver;
@@ -10,7 +10,7 @@ import org.openqa.selenium.WebElement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class Link implements Velidable, Initializable, WebElementWrapper {
+public class Link implements Validable, Initializable, WebElementWrapper {
 
     public static final Logger LOGGER = LoggerFactory.getLogger(Link.class);
     public static final String TAG = "a";

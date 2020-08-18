@@ -1,11 +1,11 @@
 package by.bsac.web;
 
-import by.bsac.core.Velidable;
+import by.bsac.core.Validable;
 import by.bsac.web.html.HtmlUtilities;
 import by.bsac.web.html.Link;
 import org.openqa.selenium.WebElement;
 
-public class ArticleTabLink extends Link implements Velidable {
+public class ArticleTabLink extends Link implements Validable {
 
     public static final String ARTICLE_TAB_LINK_CLASS = "tabs__item";
 

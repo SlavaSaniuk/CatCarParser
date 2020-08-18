@@ -1,6 +1,6 @@
 package by.bsac.core;
 
-public interface Velidable {
+public interface Validable {
 
     boolean isValid();
 }
