@@ -1,5 +1,6 @@
 package by.bsac.web.html;
 
+import by.bsac.core.Asserts;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
@@ -14,6 +15,7 @@ public abstract class Table {
     private Row table_title;
 
     public Table(WebElement a_table_element) {
+        Asserts.notNull(a_table_element, "Specified table element is null;");
 
         // Maps parameters:
         this.table_element = a_table_element;

@@ -2,6 +2,7 @@ package by.bsac.web;
 
 import by.bsac.configuration.SeleniumConfiguration;
 import by.bsac.configuration.TableConstants;
+import by.bsac.core.Initializable;
 import by.bsac.core.Parseable;
 import by.bsac.scripts.MoveToElementScript;
 import by.bsac.scripts.ScriptsProcessor;
@@ -14,21 +15,21 @@ import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
-public class ArticlesTable extends Table implements Parseable<ArticlesTable> {
+public class ArticlesTable extends Table implements Parseable<ArticlesTable>, Initializable {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ArticlesTable.class);
     @Getter
     private List<PointerRow> pointer_rows = new ArrayList<>();
     @Getter
     private List<InnerWrapper> inner_wrappers = new ArrayList<>();
+    private Map<PointerRow, InnersTable> pointer_inners_map;
 
     public ArticlesTable() {
         super(SeleniumConfiguration.getDriver().findElement(By.className("table")));
 
-        this.setTableTitle(0);
-        this.initInnerWrappers();
-        this.initPointerRows();
+        this.initialize();
 
     }
 
@@ -36,9 +37,7 @@ public class ArticlesTable extends Table implements Parseable<ArticlesTable> {
         super(a_table_element);
 
         // Init table properties:
-        super.setTableTitle(0);
-        this.initPointerRows();
-        this.initInnerWrappers();
+        this.initialize();
     }
 
     @Override
@@ -61,20 +60,6 @@ public class ArticlesTable extends Table implements Parseable<ArticlesTable> {
 
     }
 
-    private void initPointerRows() {
-        LOGGER.debug(String.format("Start to init pointer_rows list of articles table[%s]", this.toString()));
-        super.getTableContent().forEach(row -> {
-            if (PointerRow.isPointerRow(row)) this.pointer_rows.add( new PointerRow(row.getRowElement()));
-        });
-    }
-
-    private void initInnerWrappers() {
-        LOGGER.debug(String.format("Start to init pointer_rows list of articles table[%s]", this.toString()));
-        super.getTableContent().forEach(row -> {
-            if (!PointerRow.isPointerRow(row)) this.inner_wrappers.add( new InnerWrapper(row.getRowElement()));
-        });
-    }
-
     @Override
     public ArticlesTable parse() {
 
@@ -86,4 +71,35 @@ public class ArticlesTable extends Table implements Parseable<ArticlesTable> {
         LOGGER.trace("End of parse this ArticlesTable object");
         return this;
     }
+
+    @Override
+    public void initialize() {
+        LOGGER.trace("Start to initialize this ArticlesTable object;");
+
+        // Set table title ( first row ):
+        super.setTableTitle(0);
+
+        // Initialize pointer rows list:
+        this._initPointerRows();
+
+        // Initialize inners wrappers list:
+        this._initInnerWrappers();
+
+        LOGGER.trace("End of initialization this ArticlesTable object;");
+    }
+
+    private void _initPointerRows() {
+        LOGGER.trace(String.format("Start to init pointer_rows list of articles table[%s]", this.toString()));
+        super.getTableContent().forEach(row -> {
+            if (PointerRow.isPointerRow(row)) this.pointer_rows.add( new PointerRow(row.getRowElement()));
+        });
+    }
+
+    private void _initInnerWrappers() {
+        LOGGER.debug(String.format("Start to init pointer_rows list of articles table[%s]", this.toString()));
+        super.getTableContent().forEach(row -> {
+            if (!PointerRow.isPointerRow(row)) this.inner_wrappers.add( new InnerWrapper(row.getRowElement()));
+        });
+    }
+
 }
