@@ -1,13 +1,9 @@
 package by.bsac.core;
 
-import java.util.Optional;
-
 public class Asserts {
 
-    public static void notNull(Object a_obj, String a_exception_message) {
-        final String default_msg = "Specified object is null.";
-        if (a_obj == null)
-            throw new RuntimeAssertionException(a_exception_message);
+    public static void notNull(Object a_obj, String a_exception_message) throws RuntimeAssertionException{
+        if (a_obj == null) throw new RuntimeAssertionException(a_exception_message);
     }
 
     public static class RuntimeAssertionException extends RuntimeException {
