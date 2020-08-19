@@ -7,7 +7,7 @@ import org.openqa.selenium.WebElement;
 import java.nio.file.LinkOption;
 import java.util.*;
 
-public abstract class Table {
+public class Table {
 
     private WebElement table_element;
     private List<Row> rows;
@@ -55,5 +55,23 @@ public abstract class Table {
         return table_content;
     }
 
-    public abstract void parseTable();
+    public void parseTable() {};
+
+    private int _getTableCellsNumber() {
+
+        // Return number of cells of table title:
+        if (this.table_title != null)
+            return this.table_title.getRowCells().size();
+
+        // Return number of cells of first row:
+        return this.getTableContent().get(0).getRowCells().size();
+
+    }
+
+    @Override
+    public String toString() {
+        return String.format("Table{Rows[%d], Cells[%d], Title[%s]}",
+                this.getRows().size(), this._getTableCellsNumber(),
+                this.table_title != null ? this.table_title.getRowText() : "Not defined table title");
+    }
 }

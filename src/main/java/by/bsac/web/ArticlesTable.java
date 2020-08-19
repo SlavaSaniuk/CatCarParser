@@ -6,6 +6,7 @@ import by.bsac.core.Initializable;
 import by.bsac.core.Parseable;
 import by.bsac.scripts.MoveToElementScript;
 import by.bsac.scripts.ScriptsProcessor;
+import by.bsac.scripts.SetInnerRowsWrappersAttr;
 import by.bsac.web.html.Table;
 import lombok.Getter;
 import org.openqa.selenium.By;
@@ -14,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -24,11 +26,13 @@ public class ArticlesTable extends Table implements Parseable<ArticlesTable>, In
     private List<PointerRow> pointer_rows = new ArrayList<>();
     @Getter
     private List<InnerWrapper> inner_wrappers = new ArrayList<>();
-    private Map<PointerRow, InnersTable> pointer_inners_map;
+    @Getter
+    private Map<PointerRow, InnersTable> pointer_inners_map; // Map of pointer rows = inner table (Available after parsing);
 
     public ArticlesTable() {
         super(SeleniumConfiguration.getDriver().findElement(By.className("table")));
 
+        // Init table properties:
         this.initialize();
 
     }
@@ -68,8 +72,31 @@ public class ArticlesTable extends Table implements Parseable<ArticlesTable>, In
         LOGGER.trace("Start to parse this ArticlesTable object;");
         this.parseTable();
 
+        // Map pointer rows to it's inner tables:
+        this.parse_mapInnersToPointer();
+
         LOGGER.trace("End of parse this ArticlesTable object");
         return this;
+    }
+    
+    private void parse_mapInnersToPointer() {
+        LOGGER.trace("Parse: Start to map pointer rows to it's inner tables;");
+
+        // Create map:
+        this.pointer_inners_map = new HashMap<>();
+
+        // Iterate about list of pointer rows:
+        this.pointer_rows.forEach(p_row -> {
+
+            // Iterate about list of inners wrappers:
+            this.inner_wrappers.forEach(i_wrap -> {
+
+                if (p_row.getRowText().equals(i_wrap.getRowElement().getAttribute(SetInnerRowsWrappersAttr.ATTRIBUTE_NAME)))
+                    this.pointer_inners_map.put(p_row, i_wrap.getInnerTable());
+            });
+        });
+
+        LOGGER.trace("Parse: End of map pointer rows to it's inner tables;");
     }
 
     @Override

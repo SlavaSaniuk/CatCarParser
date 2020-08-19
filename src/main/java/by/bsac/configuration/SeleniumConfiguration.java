@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory;
  */
 public class SeleniumConfiguration {
 
-    public static final boolean TESTS_FLAG = true;
+    public static boolean TESTS_FLAG = true;
     private static final Logger LOGGER = LoggerFactory.getLogger(SeleniumConfiguration.class);
     private static final SeleniumConfiguration INSTANCE = new SeleniumConfiguration();
     private static WebDriver driver = null;

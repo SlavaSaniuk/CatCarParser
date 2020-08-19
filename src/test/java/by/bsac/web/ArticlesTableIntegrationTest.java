@@ -2,6 +2,7 @@ package by.bsac.web;
 
 import by.bsac.TestsConstants;
 import by.bsac.configuration.SeleniumConfiguration;
+import by.bsac.core.Asserts;
 import by.bsac.web.html.Row;
 import org.junit.Assert;
 import org.junit.jupiter.api.*;
@@ -14,18 +15,30 @@ import java.util.List;
 public class ArticlesTableIntegrationTest {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ArticlesTableIntegrationTest.class);
-    private static final String TEST_URL = "http://www.catcar.info/toyota/?l=bWFya2V0PT1ldXJvfHxjYXRhbG9nPT0xNjI1MTB8fG1vZGlmbmFtZT09WlJFMTUxTC1BRUdOS1d8fGVuZ2luZT09MVpSRkV8fG1vZENvZGUxPT0zNTlXfHxtb2RDb2RlMj09WjBFfHxtb2RDb2RlMz09RHx8bW9kZWxubz09MDA5fHxQcm9kUGVyaW9kPT0yMDA2MTEyMDA4MTJ8fHJlYz09QTF8fHN0PT03MHx8c3RzPT17IjEwIjoiXHUwNDIwXHUwNDRiXHUwNDNkXHUwNDNlXHUwNDNhIiwiNjAiOiJDT1JPTExBIFNFRCAgICAoSlBQKVwvSlROQlY1NkUyMDM1MTUyNzciLCI3MCI6IjExLTA0IFx1MDQxM1x1MDQxZVx1MDQxYlx1MDQxZVx1MDQxMlx1MDQxYVx1MDQxMCBcdTA0MTFcdTA0MWJcdTA0MWVcdTA0MWFcdTA0MTAifXx8UHJvZERhdGU9PTIwMDgwNnx8bW9kX2luZm8wPT1OfHxtb2RfaW5mbzE9PU1UTXx8bW9kX2luZm8yPT01RlN8fG1vZF9pbmZvMz09TEhEfHxtb2RfaW5mbzQ9PUhUV0N8fGdyb3VwX2lkPT0xMTA0fHxwYWdlNzA9PTA%3D";
+    private static final boolean CLOSE_AFTER_EACH_TEST = true;
+    private static final boolean CLOSE_AFTER_ALL_TEST = true;
 
-    @BeforeAll
-    static void beforeAll() {
+    @BeforeEach
+    void beforeEach() {
         WebDriver DRIVER = SeleniumConfiguration.setPath(TestsConstants.GECKO_PATH);
-        DRIVER.get(TEST_URL);
+        DRIVER.get(TestsConstants.TEST_URL);
     }
 
-    //@AfterAll
-   // static void afterEach() {
-     //   SeleniumConfiguration.close();
-    //}
+    @BeforeAll
+    static void beforeAll() { }
+
+    @AfterEach
+    void afterEach() {
+        if (CLOSE_AFTER_EACH_TEST) {
+            SeleniumConfiguration.TESTS_FLAG = true;
+            SeleniumConfiguration.close();
+        };
+    }
+
+    @AfterAll
+    static void afterAll() {
+        if (CLOSE_AFTER_ALL_TEST) SeleniumConfiguration.close();
+    }
 
     @Test
     void getRows_tableContainsRows_shouldReturnListOfRows() {
@@ -66,7 +79,28 @@ public class ArticlesTableIntegrationTest {
     @Test
     void parseTable_realTable_shouldParseTable() {
 
+        SeleniumConfiguration.TESTS_FLAG = false;
+
         ArticlesTable table = new ArticlesTable();
-        table.parseTable();
+        table.parse();
+
+        Assertions.assertNotNull(table.getPointerInnersMap());
+    }
+
+    @Test
+    void getPointerInnersMap_mapping_shouldReturnMap() {
+
+        SeleniumConfiguration.TESTS_FLAG = false;
+
+        ArticlesTable table = new ArticlesTable();
+        table.parse();
+
+        Assertions.assertNotNull(table.getPointerInnersMap());
+        Assertions.assertNotEquals(0, table.getPointerInnersMap().size());
+
+        table.getPointerInnersMap().forEach((key, val) -> {
+            LOGGER.debug(String.format("Pointer rows[%s]:", key));
+            val.getInnerRows().forEach(i_row -> LOGGER.debug(String.format("\t Inner row[%s]", i_row)));
+        });
     }
 }
