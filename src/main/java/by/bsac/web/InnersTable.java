@@ -1,12 +1,13 @@
 package by.bsac.web;
 
+import by.bsac.core.Parseable;
 import by.bsac.web.html.Table;
 import org.openqa.selenium.WebElement;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class InnersTable extends Table {
+public class InnersTable extends Table implements Parseable<InnersTable> {
 
     private List<InnerRow> inner_rows;
 
@@ -34,9 +35,14 @@ public class InnersTable extends Table {
         return this.inner_rows;
     }
 
-
     @Override
     public void parseTable() {
         this._getInnerRows();
+    }
+
+    @Override
+    public InnersTable parse() {
+        this.parseTable();
+        return this;
     }
 }

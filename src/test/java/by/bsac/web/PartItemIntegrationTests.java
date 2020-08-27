@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
+import java.util.Map;
 
 public class PartItemIntegrationTests {
 
@@ -27,7 +28,12 @@ public class PartItemIntegrationTests {
     static void beforeAll() { }
 
     @AfterEach
-    void afterEach() {        if (CLOSE_AFTER_EACH_TEST) SeleniumConfiguration.close();    }
+    void afterEach() {
+        if (CLOSE_AFTER_EACH_TEST) {
+            SeleniumConfiguration.TESTS_FLAG = true;
+            SeleniumConfiguration.close();
+        }
+    }
 
     @AfterAll
     static void afterAll() {
@@ -62,14 +68,33 @@ public class PartItemIntegrationTests {
     @Test
     void getArticlesTabs_twoArticlesTabs_shouldReturnTwoArticlesTabs() {
 
+        // Disable selenium test flag:
+        SeleniumConfiguration.TESTS_FLAG = false;
+
         PartItem item = new PartItem(SeleniumConfiguration.getDriver().getCurrentUrl());
         item.parse();
 
         List<ArticleTab> tabs = item.getArticlesTabs();
         Assertions.assertEquals(2, tabs.size());
 
-        ArticlesTable table = tabs.get(0).getArticleTable();
-        table.getPointerRows().forEach(row -> LOGGER.debug("Pointer row text: " +row.getRowText()));
+        // Parse article table:
+        tabs.forEach(tab -> {
+
+            LOGGER.debug(String.format("Parse ArticleTab[%d]", tabs.indexOf(tab) +1));
+            ArticlesTable table = tab.getArticleTable();
+            Assertions.assertNotNull(table);
+
+            LOGGER.debug(String.format("Article table: %s;", table));
+
+            Map<PointerRow, InnersTable> prow_itable = table.getPointerInnersMap();
+            prow_itable.forEach((p_row, i_table) -> {
+                LOGGER.debug("" +p_row);
+                i_table.getInnerRows().forEach(i_row -> LOGGER.debug("\t" + i_row));
+            });
+
+        });
+
+
     }
 
 }

@@ -75,6 +75,9 @@ public class ArticlesTable extends Table implements Parseable<ArticlesTable>, In
         // Map pointer rows to it's inner tables:
         this.parse_mapInnersToPointer();
 
+        // Parse inners tables:
+        this._parse_innersTables();
+
         LOGGER.trace("End of parse this ArticlesTable object");
         return this;
     }
@@ -97,6 +100,12 @@ public class ArticlesTable extends Table implements Parseable<ArticlesTable>, In
         });
 
         LOGGER.trace("Parse: End of map pointer rows to it's inner tables;");
+    }
+
+    private void _parse_innersTables() {
+        LOGGER.trace("Start to parse inners tables;");
+        this.pointer_inners_map.forEach((p_row, i_table) -> i_table.parse());
+        LOGGER.trace("End of parsing inners tables;");
     }
 
     @Override
