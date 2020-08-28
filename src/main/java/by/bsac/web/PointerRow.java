@@ -1,5 +1,8 @@
 package by.bsac.web;
 
+import by.bsac.composite.Info;
+import by.bsac.composite.Informational;
+import by.bsac.composite.RowInfo;
 import by.bsac.scripts.ClickOnElementScript;
 import by.bsac.scripts.ScriptsProcessor;
 import by.bsac.web.html.HtmlUtilities;
@@ -9,8 +12,7 @@ import org.openqa.selenium.WebElement;
 import java.util.List;
 
 
-public class PointerRow extends Row {
-
+public class PointerRow extends Row implements Informational {
     public static final String POINTER_ROW_CLASS_NAME = "pointer";
 
     public PointerRow(WebElement a_row_element) {
@@ -26,8 +28,8 @@ public class PointerRow extends Row {
         ScriptsProcessor.process(ClickOnElementScript.getInstance(), super.getRowElement());
     }
 
-
-
-
-
+    @Override
+    public Info getInfo() {
+        return new RowInfo(this.getRowText());
+    }
 }
