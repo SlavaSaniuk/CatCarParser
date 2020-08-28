@@ -38,6 +38,11 @@
             <artifactId>lombok</artifactId>
             <version>custom</version>
         </dependency>
+        <dependency>
+            <groupId>by.bsac</groupId>
+            <artifactId>uerejareo</artifactId>
+            <version>latest</version>
+        </dependency>
         <!-- https://mvnrepository.com/artifact/junit/junit -->
         <dependency>
             <groupId>junit</groupId>

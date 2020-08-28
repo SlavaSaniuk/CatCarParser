@@ -1,5 +1,6 @@
 package by.bsac.core;
 
+import by.bsac.assertions.Asserts;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

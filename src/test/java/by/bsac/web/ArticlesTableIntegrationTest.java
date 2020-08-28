@@ -2,7 +2,6 @@ package by.bsac.web;
 
 import by.bsac.TestsConstants;
 import by.bsac.configuration.SeleniumConfiguration;
-import by.bsac.core.Asserts;
 import by.bsac.web.html.Row;
 import org.junit.Assert;
 import org.junit.jupiter.api.*;
