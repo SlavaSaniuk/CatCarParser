@@ -1,5 +1,9 @@
 package by.bsac.web;
 
+import by.bsac.composite.Info;
+import by.bsac.composite.Informational;
+import by.bsac.composite.RowInfo;
+import by.bsac.composite.TableInfo;
 import by.bsac.core.Parseable;
 import by.bsac.web.html.Table;
 import org.openqa.selenium.WebElement;
@@ -7,7 +11,7 @@ import org.openqa.selenium.WebElement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class InnersTable extends Table implements Parseable<InnersTable> {
+public class InnersTable extends Table implements Parseable<InnersTable>, Informational {
 
     private List<InnerRow> inner_rows;
 
@@ -45,4 +49,14 @@ public class InnersTable extends Table implements Parseable<InnersTable> {
         this.parseTable();
         return this;
     }
+
+    @Override
+    public Info getInfo() {
+
+        // Before parse table:
+        if (this.inner_rows == null) this.parse();
+
+        return new TableInfo(this);
+    }
+
 }

@@ -1,10 +1,9 @@
 package by.bsac.web.html;
 
-import by.bsac.core.Asserts;
+import by.bsac.assertions.Asserts;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
-import java.nio.file.LinkOption;
 import java.util.*;
 
 public class Table {
