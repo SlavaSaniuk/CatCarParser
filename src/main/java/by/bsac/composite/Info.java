@@ -7,4 +7,6 @@ public interface Info {
     String getText();
 
     InfoType getType();
+
+    Class<?> getObjectType();
 }

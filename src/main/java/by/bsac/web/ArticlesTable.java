@@ -1,5 +1,9 @@
 package by.bsac.web;
 
+import by.bsac.assertions.Asserts;
+import by.bsac.composite.CompoundInformational;
+import by.bsac.composite.Info;
+import by.bsac.composite.Informational;
 import by.bsac.configuration.SeleniumConfiguration;
 import by.bsac.configuration.TableConstants;
 import by.bsac.core.Initializable;
@@ -19,7 +23,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ArticlesTable extends Table implements Parseable<ArticlesTable>, Initializable {
+public class ArticlesTable extends Table implements Parseable<ArticlesTable>, Initializable, CompoundInformational {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ArticlesTable.class);
     @Getter
@@ -28,6 +32,8 @@ public class ArticlesTable extends Table implements Parseable<ArticlesTable>, In
     private List<InnerWrapper> inner_wrappers = new ArrayList<>();
     @Getter
     private Map<PointerRow, InnersTable> pointer_inners_map; // Map of pointer rows = inner table (Available after parsing);
+
+    private final List<Informational> informationals = new ArrayList<>();
 
     public ArticlesTable() {
         super(SeleniumConfiguration.getDriver().findElement(By.className("table")));
@@ -138,4 +144,24 @@ public class ArticlesTable extends Table implements Parseable<ArticlesTable>, In
         });
     }
 
+    @Override
+    public void add(Informational a_informational) {
+        Asserts.notNull(a_informational, "a_informational");
+
+        LOGGER.trace(String.format("Add informational[%s] to this article table;", a_informational));
+        this.informationals.add(a_informational);
+    }
+
+    @Override
+    public void remove(Informational a_informational) {
+        Asserts.notNull(a_informational, "a_informational");
+
+        LOGGER.trace(String.format("Remove informational[%s] from this ArticleTable,", a_informational));
+        this.informationals.remove(a_informational);
+    }
+
+    @Override
+    public Info getInfo() {
+        return null;
+    }
 }

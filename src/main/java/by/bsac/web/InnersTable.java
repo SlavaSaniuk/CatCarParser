@@ -2,7 +2,6 @@ package by.bsac.web;
 
 import by.bsac.composite.Info;
 import by.bsac.composite.Informational;
-import by.bsac.composite.RowInfo;
 import by.bsac.composite.TableInfo;
 import by.bsac.core.Parseable;
 import by.bsac.web.html.Table;
