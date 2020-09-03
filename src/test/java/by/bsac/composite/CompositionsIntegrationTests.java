@@ -1,9 +1,9 @@
 package by.bsac.composite;
 
 import by.bsac.TestsConstants;
+import by.bsac.composite.infos.Info;
 import by.bsac.configuration.SeleniumConfiguration;
 import by.bsac.web.ArticlesTable;
-import by.bsac.web.PartItemIntegrationTests;
 import by.bsac.web.PointerRow;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.WebDriver;

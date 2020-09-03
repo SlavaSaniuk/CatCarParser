@@ -1,5 +1,7 @@
 package by.bsac.composite;
 
+import by.bsac.composite.infos.BaseInfo;
+import by.bsac.composite.infos.Info;
 import by.bsac.web.html.Table;
 import lombok.Getter;
 import org.slf4j.Logger;

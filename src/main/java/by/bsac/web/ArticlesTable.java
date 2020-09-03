@@ -2,7 +2,7 @@ package by.bsac.web;
 
 import by.bsac.assertions.Asserts;
 import by.bsac.composite.CompoundInformational;
-import by.bsac.composite.Info;
+import by.bsac.composite.infos.Info;
 import by.bsac.composite.Informational;
 import by.bsac.configuration.SeleniumConfiguration;
 import by.bsac.configuration.TableConstants;

@@ -1,5 +1,8 @@
 package by.bsac.web;
 
+import by.bsac.composite.Informational;
+import by.bsac.composite.infos.Info;
+import by.bsac.composite.infos.PartItemInfo;
 import by.bsac.configuration.SeleniumConfiguration;
 import by.bsac.core.Initializable;
 import by.bsac.core.Linked;
@@ -14,7 +17,7 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PartItem implements Linked, Parseable<PartItem>, Initializable {
+public class PartItem implements Linked, Parseable<PartItem>, Initializable, Informational {
 
     //Logger
     private static final Logger LOGGER = LoggerFactory.getLogger(PartItem.class);
@@ -25,6 +28,10 @@ public class PartItem implements Linked, Parseable<PartItem>, Initializable {
     private final Link linked; // Link to this element;
     @Getter
     private List<ArticleTab> articles_tabs; // Articles tabs list (available only after parsing);
+
+    @Getter
+    private String item_title; // Part item title;
+    private static final String ITEM_TITLE_WRAPPER_CLASS_NAME = "breadcrumbs__item"; // Class name of item title wrapper;
 
     public PartItem(String a_url) {
         LOGGER.trace("Construct new PartItem object via URL string;");
@@ -78,6 +85,9 @@ public class PartItem implements Linked, Parseable<PartItem>, Initializable {
         // Navigate to part item page:
         SeleniumConfiguration.getDriver().get(this.linked.getHrefValue());
 
+        // Initialize item title:
+        this._initializeItemTitle();
+
         // Initialize article tabs links:
         this._initializeArticleTabsLinks();
 
@@ -85,6 +95,16 @@ public class PartItem implements Linked, Parseable<PartItem>, Initializable {
         SeleniumConfiguration.getDriver().get(this.linked.getLinkHome());
 
         LOGGER.trace("End of initialize PartItem object;");
+    }
+
+    private void _initializeItemTitle() {
+        LOGGER.trace("Start to initialize PartItem title;");
+
+        WebElement wrapper = SeleniumConfiguration.getDriver().findElements(By.className(PartItem.ITEM_TITLE_WRAPPER_CLASS_NAME)).get(3);
+
+        WebElement title_element = wrapper.findElements(By.tagName("span")).get(1);
+
+        this.item_title = title_element.getText();
     }
 
     /*
@@ -103,5 +123,17 @@ public class PartItem implements Linked, Parseable<PartItem>, Initializable {
         wrappers_elements.forEach(element -> this.article_tabs_links.add(new ArticleTabLink(element.findElement(By.tagName(Link.TAG)))));
 
         LOGGER.trace("End of initialize article tabs links;");
+    }
+
+    @Override
+    public Info getInfo() {
+
+        // Create info:
+        PartItemInfo info = new PartItemInfo();
+
+        // Set info title:
+        info.setPartItemTitle(this.item_title);
+
+        return info;
     }
 }

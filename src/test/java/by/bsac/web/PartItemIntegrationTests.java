@@ -31,7 +31,6 @@ public class PartItemIntegrationTests {
     void afterEach() {
         if (CLOSE_AFTER_EACH_TEST) {
             SeleniumConfiguration.TESTS_FLAG = true;
-            SeleniumConfiguration.close();
         }
     }
 
@@ -94,7 +93,17 @@ public class PartItemIntegrationTests {
 
         });
 
+    }
 
+    @Test
+    void getItemTitle_partItemObject_shouldReturnTitleString() {
+        PartItem item = new PartItem(SeleniumConfiguration.getDriver().getCurrentUrl());
+
+        String title = item.getItemTitle();
+        Assertions.assertNotNull(title);
+        Assertions.assertFalse(title.isEmpty());
+
+        LOGGER.debug("Part item title: " +title);
     }
 
 }

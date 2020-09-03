@@ -1,10 +1,8 @@
-package by.bsac.composite;
+package by.bsac.composite.infos;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 @NoArgsConstructor
 public abstract class BaseInfo implements Info {
@@ -12,9 +10,9 @@ public abstract class BaseInfo implements Info {
     @Setter
     private String info_text;
     @Setter
-    private InfoType info_type;
-    @Getter @Setter
-    private Class<?> object_type;
+    protected InfoType info_type;
+    @Getter
+    protected Class<?> object_type;
 
     @Override
     public String getText() {

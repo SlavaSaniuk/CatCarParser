@@ -1,10 +1,11 @@
 package by.bsac.composite;
 
+import by.bsac.composite.infos.BaseInfo;
 import lombok.Setter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class RowInfo extends BaseInfo{
+public class RowInfo extends BaseInfo {
 
     //Logger
     private static final Logger LOGGER = LoggerFactory.getLogger(RowInfo.class);

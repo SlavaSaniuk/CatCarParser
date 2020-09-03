@@ -1,8 +1,8 @@
-package by.bsac.composite;
+package by.bsac.composite.infos;
 
 public interface Info {
 
-    enum InfoType{ TEXT, TABLE }
+    enum InfoType{ TEXT, TABLE, PART_ITEM, ARTICLE_TAB}
 
     String getText();
 

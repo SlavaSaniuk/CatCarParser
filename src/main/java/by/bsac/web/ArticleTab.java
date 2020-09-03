@@ -1,5 +1,8 @@
 package by.bsac.web;
 
+import by.bsac.composite.Informational;
+import by.bsac.composite.infos.ArticleTabInfo;
+import by.bsac.composite.infos.Info;
 import by.bsac.configuration.SeleniumConfiguration;
 import by.bsac.core.Linked;
 import by.bsac.core.Parseable;
@@ -8,7 +11,7 @@ import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class ArticleTab implements Linked, Parseable<ArticleTab> {
+public class ArticleTab implements Linked, Parseable<ArticleTab>, Informational {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ArticleTab.class);
 
@@ -56,4 +59,17 @@ public class ArticleTab implements Linked, Parseable<ArticleTab> {
 
     }
 
+    @Override
+    public Info getInfo() {
+        // Parse this article tab instance:
+        this.parse();
+
+        // Construct new Info:
+        final ArticleTabInfo info = new ArticleTabInfo();
+
+        // Add pointer row to info object:
+        this.article_table.getPointerRows().forEach((row) -> info.getPointerRows().add(row));
+
+        return info;
+    }
 }
