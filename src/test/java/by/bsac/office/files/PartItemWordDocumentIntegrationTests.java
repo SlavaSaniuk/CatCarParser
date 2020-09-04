@@ -8,6 +8,7 @@ import by.bsac.utils.FilesUtilities;
 import by.bsac.web.ArticlesTable;
 import by.bsac.web.PartItem;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.apache.poi.xwpf.usermodel.XWPFHeader;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.WebDriver;
@@ -23,8 +24,9 @@ public class PartItemWordDocumentIntegrationTests {
     //Logger
     private static final Logger LOGGER = LoggerFactory.getLogger(PartItemWordDocumentIntegrationTests.class);
 
-    private static final boolean CLOSE_AFTER_EACH_TEST = false;
+    private static final boolean CLOSE_AFTER_EACH_TEST = true;
     private static final boolean CLOSE_AFTER_ALL_TEST = true;
+    private static PartItemWordDocument DOCUMENT;
 
     @BeforeEach
     void beforeEach() {
@@ -35,19 +37,28 @@ public class PartItemWordDocumentIntegrationTests {
     static void beforeAll() {
         WebDriver DRIVER = SeleniumConfiguration.setPath(TestsConstants.GECKO_PATH);
         DRIVER.get(TestsConstants.TEST_URL);
+
+        //PartItem item = new PartItem(SeleniumConfiguration.getDriver().getCurrentUrl());
+        //Info info = item.getInfo();
+        //PartItemWordDocumentIntegrationTests.DOCUMENT = new PartItemWordDocument(info);
     }
 
     @AfterEach
     void afterEach() {
         if (CLOSE_AFTER_EACH_TEST) {
             SeleniumConfiguration.TESTS_FLAG = true;
-            SeleniumConfiguration.close();
         }
     }
 
     @AfterAll
     static void afterAll() {
         if (CLOSE_AFTER_ALL_TEST) SeleniumConfiguration.close();
+
+        //try {
+            //DOCUMENT.getDocument().close();
+        //} catch (IOException e) {
+            //e.printStackTrace();
+       // }
     }
 
     private void _writeWordDocumentToFile(XWPFDocument a_document, String a_file_name) throws IOException {
@@ -62,20 +73,45 @@ public class PartItemWordDocumentIntegrationTests {
     @Test
     void process_partItemPage_shouldSetPageTitle() throws IOException {
 
-        PartItem item = new PartItem(SeleniumConfiguration.getDriver().getCurrentUrl());
 
-        Info info = item.getInfo();
-
-        PartItemWordDocument doc = new PartItemWordDocument(info);
-
-        XWPFParagraph paragraph = doc.getPageTitle();
+        XWPFParagraph paragraph = DOCUMENT.getPageTitle();
 
         Assertions.assertNotNull(paragraph);
         Assertions.assertFalse(paragraph.getText().isEmpty());
 
-        this._writeWordDocumentToFile(doc.getDocument(), "PartItemTitle.docx");
-        doc.getDocument().close();
+        this._writeWordDocumentToFile(DOCUMENT.getDocument(), "PartItemTitle.docx");
     }
+
+    @Test
+    void process_partItemPage_shouldSetDocumentHeader() throws IOException {
+
+        XWPFHeader header = DOCUMENT.getDocumentHeader();
+
+        Assertions.assertNotNull(header);
+        Assertions.assertFalse(header.getText().isEmpty());
+
+        this._writeWordDocumentToFile(DOCUMENT.getDocument(), "PartItemHeader.docx");
+    }
+
+    @Test
+    @Disabled
+    void process_partItemPage_shouldReturnArticlesTableList() throws IOException {
+
+        SeleniumConfiguration.TESTS_FLAG = false;
+
+        PartItem item = new PartItem(SeleniumConfiguration.getDriver().getCurrentUrl());
+        Info info = item.getInfo();
+
+        PartItemWordDocument document = new PartItemWordDocument(info);
+        document.process();
+
+        Assertions.assertNotNull(document.getArticlesTables());
+        Assertions.assertEquals(2, document.getArticlesTables().size());
+
+        this._writeWordDocumentToFile(document.getDocument(), "PartItemArticlesTables.docx");
+    }
+    
+
 
 
 }

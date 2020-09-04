@@ -128,11 +128,17 @@ public class PartItem implements Linked, Parseable<PartItem>, Initializable, Inf
     @Override
     public Info getInfo() {
 
+        // Parse PartItem instance:
+        this.parse();
+
         // Create info:
         PartItemInfo info = new PartItemInfo();
 
         // Set info title:
         info.setPartItemTitle(this.item_title);
+
+        // Iterate about all child infos:
+        this.articles_tabs.forEach(a_tab -> info.getTabsInfos().add(a_tab.getInfo()));
 
         return info;
     }
